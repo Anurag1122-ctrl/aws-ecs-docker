@@ -11,8 +11,17 @@ phases:
     commands:
       - echo log in to Amazon ECR...
       - aws --version
-      - echo $AWS_DEFAULT_REGION
-      - $(aws ecr get-login --no-include-email --region ap-southeast-1)
+      - echo AWS_ACCOUNT_ID ${AWS_ACCOUNT_ID}
+      - ECR_REGION=${CD_ECR_REGION:-ap-southeast-1}
+      - echo ECR_REGION ${ECR_REGION}
+      - ECR_URI=${AWS_ACCOUNT_ID}.dkr.ecr.${ECR_REGION}.amazonaws.com
+      - echo ECR_URI ${ECR_URI}
+      - ECR_REPOSITORY_NAME=${CD_ECR_REPOSITORY_NAME:-digitalsme-node-app-check}
+      - echo ECR_REPOSITORY_NAME ${ECR_REPOSITORY_NAME}
+      - REPOSITORY_URI=$ECR_URI/$ECR_REPOSITORY_NAME
+      - echo REPOSITORY_URI ${REPOSITORY_URI}
+      - IMAGE_BUILD_ENV=${CD_IMAGE_BUILD_ENV:-}
+      - echo IMAGE_TAG $IMAGE_TAG
       - REPOSITORY_URI=193980408680.dkr.ecr.ap-southeast-1.amazonaws.com/digitalsme-node-app-check
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=${COMMIT_HASH:=latest}
