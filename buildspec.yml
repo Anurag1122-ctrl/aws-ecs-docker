@@ -12,8 +12,8 @@ phases:
       - echo log in to Amazon ECR...
       - aws --version
       - echo $AWS_DEFAULT_REGION
-      - $(aws ecr get-login --no-include-email --region us-east-1)
-      - REPOSITORY_URI=<your_account_id>.dkr.ecr.us-east-1.amazonaws.com/aws-ecs-docker
+      - $(aws ecr get-login --no-include-email --region ap-southeast-1)
+      - REPOSITORY_URI=193980408680.dkr.ecr.ap-southeast-1.amazonaws.com/digitalsme-node-app-check
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=${COMMIT_HASH:=latest}
   build:
@@ -28,6 +28,6 @@ phases:
       - docker push $REPOSITORY_URI:latest
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       - echo write definitions file...
-      - printf '[{"name":"exp-code-pipeline","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      - printf '[{"name":"digitalsme-prod-node-app","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
 artifacts:
   files: imagedefinitions.json
